@@ -11,16 +11,18 @@ namespace PolylineEncoder.Pcl.Net.Utility.Decoders
         /// </summary>
         /// <param name="encodedPoints"></param>
         /// <returns></returns>
-        public IEnumerable<Tuple<double, double>> DecodeAsTuples(string encodedPoints)
+        public IEnumerable<Tuple<double, double>> DecodeAsTuples<T>(string encodedPoints)
+            where T : IGeoCoordinate, new()
         {
             if (string.IsNullOrEmpty(encodedPoints)) yield break;
-            foreach (var point in Decode(encodedPoints))
+            foreach (var point in Decode<T>(encodedPoints))
             {
                 yield return Tuple.Create(point.Latitude, point.Longitude);
             }
         }
 
-        public IEnumerable<IGeoCoordinate> Decode(string encodedPoints)
+        public IEnumerable<T> Decode<T>(string encodedPoints)
+            where T: IGeoCoordinate,new ()
         {
             if (string.IsNullOrEmpty(encodedPoints)) yield break;
             var polyLineChars = encodedPoints.ToCharArray();
@@ -64,7 +66,7 @@ namespace PolylineEncoder.Pcl.Net.Utility.Decoders
 
                 currentLng += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
 
-                var geoPoint = new GeoCoordinate
+                var geoPoint = new T
                 {
                     Latitude = Convert.ToDouble(currentLat) / 100000.0,
                     Longitude = Convert.ToDouble(currentLng) / 100000.0

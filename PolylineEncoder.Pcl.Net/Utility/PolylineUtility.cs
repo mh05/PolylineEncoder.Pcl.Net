@@ -39,14 +39,16 @@ namespace PolylineEncoder.Pcl.Net.Utility
             return _encoder.Encode(points);
         }
 
-        public IEnumerable<Tuple<double, double>> DecodeAsTuples(string encodedPoints)
+        public IEnumerable<Tuple<double, double>> DecodeAsTuples<T>(string encodedPoints)
+             where T : IGeoCoordinate, new()
         {
-            return _decoder.DecodeAsTuples(encodedPoints);
+            return _decoder.DecodeAsTuples<T>(encodedPoints);
         }
 
-        public IEnumerable<IGeoCoordinate> Decode(string encodedPoints)
+        public IEnumerable<T> Decode<T>(string encodedPoints)
+             where T : IGeoCoordinate, new()
         {
-            return _decoder.Decode(encodedPoints);
+            return _decoder.Decode<T>(encodedPoints);
         }
     }
 }

@@ -39,6 +39,11 @@ namespace PolylineEncoder.Pcl.Net.Utility
             return _encoder.Encode(points);
         }
 
+        public string Encode(params IGeoCoordinate[] points )
+        {
+            return _encoder.Encode(points);
+        }
+
         public IEnumerable<Tuple<double, double>> DecodeAsTuples<T>(string encodedPoints)
              where T : IGeoCoordinate, new()
         {
@@ -49,6 +54,21 @@ namespace PolylineEncoder.Pcl.Net.Utility
              where T : IGeoCoordinate, new()
         {
             return _decoder.Decode<T>(encodedPoints);
+        }
+
+        /// <summary>
+        /// Default decode.
+        /// </summary>
+        /// <param name="encodedPoints"></param>
+        /// <returns></returns>
+        public IEnumerable<IGeoCoordinate> Decode(string encodedPoints)
+        {
+            return _decoder.Decode<GeoCoordinate>(encodedPoints);
+        }
+
+        public IEnumerable<Tuple<double, double>> DecodeAsTuples(string encodedPoints)
+        {
+            return _decoder.DecodeAsTuples<GeoCoordinate>(encodedPoints);
         }
     }
 }

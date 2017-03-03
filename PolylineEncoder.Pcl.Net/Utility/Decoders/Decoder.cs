@@ -6,6 +6,7 @@ namespace PolylineEncoder.Pcl.Net.Utility.Decoders
 {
     public class Decoder : IPolylineDecoder
     {
+        private const double Divider = 1E5d;
         /// <summary>
         /// Latitude,Longitude
         /// </summary>
@@ -21,8 +22,13 @@ namespace PolylineEncoder.Pcl.Net.Utility.Decoders
             }
         }
 
+        public IEnumerable<GeoCoordinate> Decode(string encodePoints)
+        {
+            return Decode<GeoCoordinate>(encodePoints);
+        }
+
         public IEnumerable<T> Decode<T>(string encodedPoints)
-            where T: IGeoCoordinate,new ()
+            where T : IGeoCoordinate, new()
         {
             if (string.IsNullOrEmpty(encodedPoints)) yield break;
             var polyLineChars = encodedPoints.ToCharArray();
@@ -43,7 +49,8 @@ namespace PolylineEncoder.Pcl.Net.Utility.Decoders
                     next5Bits = polyLineChars[index++] - 63;
                     sum |= (next5Bits & 31) << shifter;
                     shifter += 5;
-                } while (next5Bits >= 32 && index < polyLineChars.Length);
+                }
+                while (next5Bits >= 32 && index < polyLineChars.Length);
 
                 if (index >= polyLineChars.Length)
                     break;
@@ -59,7 +66,8 @@ namespace PolylineEncoder.Pcl.Net.Utility.Decoders
                     next5Bits = polyLineChars[index++] - 63;
                     sum |= (next5Bits & 31) << shifter;
                     shifter += 5;
-                } while (next5Bits >= 32 && index < polyLineChars.Length);
+                }
+                while (next5Bits >= 32 && index < polyLineChars.Length);
 
                 if (index >= polyLineChars.Length && next5Bits >= 32)
                     break;
@@ -68,8 +76,8 @@ namespace PolylineEncoder.Pcl.Net.Utility.Decoders
 
                 var geoPoint = new T
                 {
-                    Latitude = Convert.ToDouble(currentLat) / 100000.0,
-                    Longitude = Convert.ToDouble(currentLng) / 100000.0
+                    Latitude = Convert.ToDouble(currentLat) / Divider,
+                    Longitude = Convert.ToDouble(currentLng) / Divider
                 };
 
                 yield return geoPoint;

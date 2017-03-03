@@ -50,8 +50,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DecoderTests.cs" />
+    <Compile Include="EncoderTests.cs" />
+    <Compile Include="TestData.cs" />
     <Compile Include="TestGeoCoordinate.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="PolylineUtilityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

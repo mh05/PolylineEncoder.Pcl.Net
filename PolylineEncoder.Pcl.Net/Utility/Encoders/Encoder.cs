@@ -28,6 +28,11 @@ namespace PolylineEncoder.Pcl.Net.Utility.Encoders
             return Encode(geoPoints);
         }
 
+        public string Encode(params IGeoCoordinate[] points)
+        {
+            return Encode(points.ToList());
+        }
+
         public string Encode(IEnumerable<IGeoCoordinate> points)
         {
             if (points == null)

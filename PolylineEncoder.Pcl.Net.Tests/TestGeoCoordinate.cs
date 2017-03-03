@@ -9,6 +9,14 @@ namespace PolylineEncoder.Pcl.Net.Tests
 {
     public class TestGeoCoordinate : IGeoCoordinate
     {
+        public TestGeoCoordinate(){}
+
+        public TestGeoCoordinate(double latitude, double longitude)
+        {
+            Latitude = latitude;
+            Longitude = longitude;
+        }
+
         public double Latitude { get; set; }
         public double Longitude { get; set; }
     }
